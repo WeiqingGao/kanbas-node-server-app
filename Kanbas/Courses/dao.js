@@ -10,4 +10,25 @@ export function findCoursesForEnrolledUser(userId) {
         enrollments.some((enrollment) => enrollment.user === userId && enrollment.course === course._id));
     return enrolledCourses;
 }
-  
+
+export function createCourse(course) {
+    const newCourse = { ...course, _id: Date.now().toString() };
+    Database.courses = [...Database.courses, newCourse];
+    return newCourse;
+}
+
+export function deleteCourse(courseId) {
+    const { courses, enrollments } = Database;
+    Database.courses = courses.filter((course) => course._id !== courseId);
+    Database.enrollments = enrollments.filter(
+        (enrollment) => enrollment.course !== courseId
+    );
+}
+
+app.put("/api/courses/:courseId", (req, res) => {
+    const { courseId } = req.params;
+    const courseUpdates = req.body;
+    const status = dao.updateCourse(courseId, courseUpdates);
+    res.send(status);
+});
+
