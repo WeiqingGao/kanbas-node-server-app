@@ -2,9 +2,11 @@ import express from 'express';
 import Hello from "./Hello.js";
 import Lab5 from './Lab5/index.js';
 import cors from "cors";
-import UserRoutes from "./Kanbas/Users/routes.js";
+import UserRoutes from "./Kanbas/Users/route.js";
 import CourseRoutes from "./Kanbas/Courses/route.js";
-import ModuleRoutes from './Kanbas/Modules/routes.js';
+import ModuleRoutes from './Kanbas/Modules/route.js';
+import AssignmentRoutes from "./Kanbas/Assignments/route.js";
+import EnrollmentRoutes from "./Kanbas/Enrollments/route.js";
 import session from 'express-session';
 import "dotenv/config";
 
@@ -38,4 +40,7 @@ UserRoutes(app);
 CourseRoutes(app);
 EnrollmentRoutes(app);
 ModuleRoutes(app);
+AssignmentRoutes(app);
+EnrollmentRoutes(app);
+
 app.listen(process.env.PORT || 4000);
