@@ -34,7 +34,7 @@ const sessionOptions = {
   app.use(session(sessionOptions));
   
   
-app.use(express.json()); // do all your work after this line
+app.use(express.json()); 
 UserRoutes(app);
 Lab5(app);
 Hello(app);
