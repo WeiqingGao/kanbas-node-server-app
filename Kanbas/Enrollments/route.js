@@ -1,40 +1,33 @@
-import * as dao from "./dao.js";
+import * as enrollmentsDao from './dao.js';
 
-export default function EnrollmentRoutes(app) {
-  app.get("/api/enrollments", (req, res) => {
-    const enrollments = dao.findAllEnrollments();
-    res.json(enrollments);
-  });
+// In Kanbas/Enrollments/routes.js
 
-  app.get("/api/enrollments/user/:userId", (req, res) => {
-    const userId = req.params.userId;
-    const enrollments = dao.findEnrollmentsForUser(userId);
-    res.json(enrollments);
-  });
+export default function EnrollmentsRoutes(app) {
+    app.post('/api/enrollments', (req, res) => {
+      const { userId, courseId } = req.body;
+      enrollmentsDao.enrollUserInCourse(userId, courseId);
+      res.sendStatus(200);
+    });
+  
+    app.delete('/api/enrollments', (req, res) => {
+        const { userId, courseId } = req.body;
+        const { enrollments } = Database;
+        Database.enrollments = enrollments.filter(
+          (enrollment) => enrollment.user !== userId || enrollment.course !== courseId
+        );
+        res.sendStatus(200);
+      });
+  
+    app.get('/api/enrollments/user/:userId', (req, res) => {
+      const { userId } = req.params;
+      const { enrollments }= enrollmentsDao.findEnrollmentsForUser(userId);
+      res.status(200).json(enrollments);
+    });
 
-  app.get("/api/enrollments/course/:courseId", (req, res) => {
-    const courseId = req.params.courseId;
-    const enrollments = dao.findEnrollmentsForCourse(courseId);
-    res.json(enrollments);
-  });
-
-  app.post("/api/enrollments", (req, res) => {
-    const { user, course } = req.body;
-    try {
-      const enrollment = dao.enrollUserInCourse(user, course);
-      res.json(enrollment);
-    } catch (err) {
-      res.status(400).json({ error: err.message });
-    }
-  });
-
-  app.delete("/api/enrollments", (req, res) => {
-    const { user, course } = req.body;
-    try {
-      const enrollment = dao.unenrollUserFromCourse(user, course);
-      res.json(enrollment);
-    } catch (err) {
-      res.status(400).json({ error: err.message });
-    }
-  });
-}
+    app.get('/api/courses', (req, res) => {
+        const courses = coursesDao.findAllCourses();
+        res.json(courses);
+      });
+  }
+  
+  

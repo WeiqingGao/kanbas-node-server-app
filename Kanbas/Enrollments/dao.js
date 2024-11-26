@@ -1,30 +1,22 @@
-import db from "../Database/index.js";
+import Database from "../Database/index.js";
+export function enrollUserInCourse(userId, courseId) {
+  const { enrollments } = Database;
+  enrollments.push({ _id: Date.now(), user: userId, course: courseId });
+}
 
-let { enrollments } = db;
-
-export const findAllEnrollments = () => enrollments;
-
-export const findEnrollmentsForUser = (userId) =>
-  enrollments.filter((enrollment) => enrollment.user === userId);
-
-export const findEnrollmentsForCourse = (courseId) =>
-  enrollments.filter((enrollment) => enrollment.course === courseId);
-
-export const enrollUserInCourse = (userId, courseId) => {
-  const newEnrollment = { user: userId, course: courseId };
-  enrollments = [...enrollments, newEnrollment];
-  return newEnrollment;
-};
-
-export const unenrollUserFromCourse = (userId, courseId) => {
-  const existingEnrollment = enrollments.find(
-    (e) => e.user === userId && e.course === courseId
-  );
-  if (!existingEnrollment) {
-    throw new Error("Enrollment does not exist.");
+export function unenrollUserFromCourse(userId, courseId) {
+  const { enrollments } = Database.users.find((u) => u._id === userId);
+  if (enrollments) {
+    user.courses = user.courses.filter((id) => id !== courseId);
   }
-  enrollments = enrollments.filter(
-    (e) => !(e.user === userId && e.course === courseId)
-  );
-  return existingEnrollment;
-};
+  return user;
+}
+
+export function findCoursesForUser(userId) {
+  const { enrollments } = Database.users.find((u) => u._id === userId);
+  if (enrollments) {
+    return user.courses;
+  } else {
+    return [];
+  }
+}
