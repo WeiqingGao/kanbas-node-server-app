@@ -5,8 +5,7 @@ export function updateModule(moduleId, moduleUpdates) {
     const module = modules.find((module) => module._id === moduleId);
     Object.assign(module, moduleUpdates);
     return module;
-  }
-  
+}
 
 export function deleteModule(moduleId) {
     const { modules } = Database;
